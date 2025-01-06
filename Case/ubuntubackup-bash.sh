@@ -1,28 +1,23 @@
 #!/bin/bash
-####################################
-#
-# Backup to NFS mount script with timestamp.
-#
-####################################
 
-# What to backup.
-backup_files="/home /var/spool/mail /etc /root /boot /opt"
+# Backupped filer
+backup="/home /var/spool/mail /etc /root /boot /opt"
 
 # Where to backup to.
 dest="/mnt/backup/(Server Backup Mappe Navn)"
 
 # Create archive filename with timestamp.
-timestamp=$(date +"%Y%m%d-%H%M")
+tid=$(date +"%Y%m%d-%H%M")
 hostname=$(hostname -s)
-archive_file="$hostname-$timestamp.tgz"
+archive_fil="$hostname-$fil.tgz"
 
 # Print start status message.
-echo "Backing up $backup_files to $dest/$archive_file"
+echo "Backing up $backup to $dest/$archive_fil"
 date
 echo
 
 # Backup the files using tar.
-tar czf $dest/$archive_file $backup_files
+tar czf $dest/$archive_fil $backup
 
 # Print end status message.
 echo
