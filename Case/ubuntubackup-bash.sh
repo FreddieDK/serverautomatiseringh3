@@ -7,7 +7,7 @@ backup="/"
 dest="/mnt/backup/serverbackups"
 
 # Opret arkiveret fil med tidspunkt/dato
-tid=$(date +%d-%m-%Y)
+tid=$(date +%Y-%m-%d-%H-%M)
 hostname=$(hostname -s)
 archive_fil="$hostname-$tid.tgz"
 
@@ -16,7 +16,7 @@ echo "Backup op af $backup til $dest/$archive_fil"
 date
 echo
 
-# Arkiver/zip fil 
+# Arkiver/zip fil
 tar czf $dest/$archive_fil $backup
 
 # Print status besked
@@ -24,5 +24,5 @@ echo
 echo "Backup finished"
 date
 
-# slet filer ældre end 14 dage 
+# slet filer ældre end 14 dage
 find /mnt/backup/serverbackups -type f -mtime +14 -delete
