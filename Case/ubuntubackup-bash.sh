@@ -9,7 +9,7 @@ dest="/mnt/backup/(Server Backup Mappe Navn)"
 # Opret arkiveret fil med tidspunkt/dato
 tid=$(date +%d-%m-%Y)
 hostname=$(hostname -s)
-archive_fil="$hostname-$fil.tgz"
+archive_fil="$hostname-$tid.tgz"
 
 # Print besked I console
 echo "Backing op $backup til $dest/$archive_fil"
