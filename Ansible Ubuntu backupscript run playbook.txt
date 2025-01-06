@@ -1,0 +1,8 @@
+---
+- name: Set up and run NFS backup on Ubuntu
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Run the backup script
+      command: /backupscript

@@ -1,0 +1,70 @@
+---
+- name: Set up NFS backup on Ubuntu
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install NFS common tools
+      apt:
+        name: nfs-common
+        state: present
+        update_cache: yes
+
+    - name: Create backup directory
+      file:
+        path: /mnt/backup
+        state: directory
+        mode: '0755'
+
+    - name: Mount NFS directory
+      mount:
+        src: "192.168.0.25:/mnt/Mainpool/Storage/Backups"
+        path: /mnt/backup
+        fstype: nfs
+        opts: defaults
+        state: mounted
+
+    - name: Create backup script directory and file
+      copy:
+        dest: /backupscript
+        content: |
+          #!/bin/bash
+          ####################################
+          #
+          # Backup to NFS mount script.
+          #
+          ####################################
+
+          # What to backup
+          backup_files="/home"
+
+          # Create archive filename
+          day=$(date +%A)
+          hostname=$(hostname -s)
+          archive_file="$hostname-$day.tgz"
+
+          # Where to backup to
+          dest="/mnt/backup/$hostname"
+
+          # Print start status message
+          echo "Backing up $backup_files to $dest/$archive_file"
+          date
+          echo
+
+          # Backup the files using tar
+          tar czf $dest/$archive_file $backup_files
+
+          # Print end status message
+          echo
+          echo "Backup finished"
+          date
+
+          # Long listing of files in $dest to check file sizes
+          ls -lh $dest
+        mode: '0700'
+
+    - name: Add NFS mount to fstab
+      lineinfile:
+        path: /etc/fstab
+        line: "192.168.0.25:/mnt/Mainpool/Storage/Backups /mnt/backup nfs defaults 0 0"
+        state: present
