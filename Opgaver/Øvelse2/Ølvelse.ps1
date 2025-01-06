@@ -1,1 +1,1 @@
-$Data = Import-Csv -File csv.csv
+$Data = Import-Csv -Path data/csv.csv
