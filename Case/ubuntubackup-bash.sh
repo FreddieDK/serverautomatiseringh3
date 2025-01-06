@@ -3,26 +3,23 @@
 # Backupped filer
 backup="/home /var/spool/mail /etc /root /boot /opt"
 
-# Where to backup to.
+# Destination
 dest="/mnt/backup/(Server Backup Mappe Navn)"
 
-# Create archive filename with timestamp.
+# Opret arkiveret fil med tidspunkt/dato
 tid=$(date +"%Y%m%d-%H%M")
 hostname=$(hostname -s)
 archive_fil="$hostname-$fil.tgz"
 
-# Print start status message.
-echo "Backing up $backup to $dest/$archive_fil"
+# Print besked I console
+echo "Backing op $backup til $dest/$archive_fil"
 date
 echo
 
-# Backup the files using tar.
+# Arkiver/zip fil 
 tar czf $dest/$archive_fil $backup
 
-# Print end status message.
+# Print status besked
 echo
 echo "Backup finished"
 date
-
-# Long listing of files in $dest to check file sizes.
-ls -lh $dest
