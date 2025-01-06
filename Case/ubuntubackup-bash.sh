@@ -23,3 +23,6 @@ tar czf $dest/$archive_fil $backup
 echo
 echo "Backup finished"
 date
+
+# slet filer ældre end 14 dage 
+find /mnt/backup/(Server Backup Mappe Navn) -type f -mtime +14 -delete
