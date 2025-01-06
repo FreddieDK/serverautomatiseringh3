@@ -2,22 +2,22 @@
 Import-Module ActiveDirectory
 
 # Efterspør bruger om CSV fil 
-$CSVPath = Read-Host -Prompt "Enter the full path to the CSV file"
+$CSVPath = Read-Host -Prompt "Angiv den fulde sti til CSV fil"
 
 # Tjek om fil eksistere
 if (-Not (Test-Path -Path $CSVPath)) {
-    Write-Host "CSV file not found at $CSVPath. Please check the file path." -ForegroundColor Red
+    Write-Host "CSV fil ikke fundet $CSVPath. Venligst angiv den fulde sti" -ForegroundColor Red
     exit
 }
 
 # Efterspør bruger om AD OU path
-$ADOUPath = Read-Host -Prompt "Enter the Active Directory OU path (e.g., OU=IT,DC=skole,DC=local)"
+$ADOUPath = Read-Host -Prompt "Angiv det fulde Active Directory OU sti (f.eks., OU=IT,DC=skole,DC=local)"
 
 # Importer CSV data 
 $Users = Import-Csv -Path $CSVPath -Delimiter ';'
-$Domain = Read-Host -Prompt "Enter the domain (example.local)"
+$Domain = Read-Host -Prompt "Angiv domain (example.local)"
 
-# Loop through each user in the CSV file
+# Loop enhver bruger igennem fra csv
 foreach ($User in $Users) {
     # Extract user details from the CSV
     $Username = $User.Username
@@ -25,10 +25,10 @@ foreach ($User in $Users) {
     $PhoneNumber = $User.Phonenumber
     $Mail = "$Username@$Domain" # Construct email using username@skole.local
 
-    # Define user properties
+    # Definer bruger variabler 
     $ADUserParams = @{
         SamAccountName = $Username
-        UserPrincipalName = $Mail # UPN same as email
+        UserPrincipalName = $Mail 
         Name = $Username
         GivenName = $Username
         Surname = "User"
@@ -36,10 +36,10 @@ foreach ($User in $Users) {
         Enabled = $true
         EmailAddress = $Mail
         OfficePhone = $PhoneNumber
-        Path = $ADOUPath # Use the user-specified OU path
+        Path = $ADOUPath 
     }
 
-    # Create the user in AD
+    # Opret bruger i AD
     try {
         New-ADUser @ADUserParams
         Write-Host "Successfully created user: $Username" -ForegroundColor Green
@@ -48,6 +48,6 @@ foreach ($User in $Users) {
     }
 }
 
-Write-Host "User import completed." -ForegroundColor Cyan
+Write-Host "Bruger oprettet" -ForegroundColor Cyan
 
 PAUSE
