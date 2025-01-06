@@ -3,14 +3,13 @@ $InputCSVPath = Join-Path -Path $CurrentDirectory -ChildPath "csv.csv"
 
 
 # Get the directory and filename of the input file
-$InputFolder = Split-Path -Path $InputCSVPath
 $InputFileName = [System.IO.Path]::GetFileNameWithoutExtension($InputCSVPath)
 $InputFileExtension = [System.IO.Path]::GetExtension($InputCSVPath)
 
 # Generate the output file name using the current date and time
 $CurrentDateTime = Get-Date -Format "yyyyMMdd-HHmmss"
 $OutputFileName = "$InputFileName-$CurrentDateTime$InputFileExtension"
-$OutputCSVPath = Join-Path -Path $InputFolder -ChildPath $OutputFileName
+$OutputCSVPath = Join-Path -Path $CurrentDirectory -ChildPath $OutputFileName
 
 # Import the CSV data
 $Data = Import-Csv -Path $InputCSVPath -Delimiter ';'
