@@ -1,12 +1,18 @@
 #!/bin/bash
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 # Backup alt fra yderst rod
 backup="/"
 
 # Eksluder /mnt/ for eksterne mapped 
 exclude_=("--exclude=/mnt")
 
+=======
+# Backupped filer
+#backup="/home /var/spool/mail /etc /root /boot /opt"
+backup="/"
+>>>>>>> Stashed changes
 =======
 # Backupped filer
 #backup="/home /var/spool/mail /etc /root /boot /opt"
@@ -20,6 +26,7 @@ tid=$(date +%d-%m-%Y)
 hostname=$(hostname -s)
 archive_fil="$hostname-$tid.tgz"
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 # Print besked til konsol
 echo "Backing up $backup to $dest/$archive_fil"
@@ -38,13 +45,27 @@ echo
 tar czf $dest/$archive_fil $backup
 >>>>>>> Stashed changes
 
+=======
+# Print besked I console
+echo "Backup op af $backup til $dest/$archive_fil"
+date
+echo
+
+# Arkiver/zip fil 
+tar czf $dest/$archive_fil $backup
+
+>>>>>>> Stashed changes
 # Print status besked
 echo
 echo "Backup finished"
 date
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 # Slet filer ældre end 14 dage via find kommado
+=======
+# slet filer ældre end 14 dage 
+>>>>>>> Stashed changes
 =======
 # slet filer ældre end 14 dage 
 >>>>>>> Stashed changes
