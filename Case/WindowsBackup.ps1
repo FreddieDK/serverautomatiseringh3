@@ -1,6 +1,6 @@
 # Define the folders to back up
 $BackupFolders = @(
-    "C:\FirmaFiler",  # Example folder 1
+    "C:\FirmaFiler" # Example folder 1
 )
 
 # Define the destination folder for backups
