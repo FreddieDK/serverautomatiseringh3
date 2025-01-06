@@ -1,8 +1,8 @@
-Name,Hobby,Level,Sensitive_Data
-Alice,Reading,Expert,1234-5678-9012
-Bob,Cycling,Intermediate,5678-1234-9012
-Charlie,Cooking,Beginner,9012-3456-7890
-Diana,Gardening,Expert,3456-7890-1234
-Ethan,Painting,Intermediate,7890-1234-5678
-Fiona,Photography,Beginner,2345-6789-0123
-George,Gaming,Expert,6789-0123-4567
+Name;Hobby;Level;Sensitive_Data
+Alice;Reading;Expert;1234-5678-9012
+Bob;Cycling;Intermediate;5678-1234-9012
+Charlie;Cooking;Beginner;9012-3456-7890
+Diana;Gardening;Expert;3456-7890-1234
+Ethan;Painting;Intermediate;7890-1234-5678
+Fiona;Photography;Beginner;2345-6789-0123
+George;Gaming;Expert;6789-0123-4567
