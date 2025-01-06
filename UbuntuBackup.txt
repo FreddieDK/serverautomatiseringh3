@@ -1,4 +1,4 @@
-## din mor
+
 
 sudo -i
 apt install nfs-common -y
