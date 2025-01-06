@@ -1,19 +1,19 @@
-# Import the Active Directory module
+# Importere ActiveDirectory ps module
 Import-Module ActiveDirectory
 
-# Prompt the user for the path to the CSV file
+# Efterspør bruger om CSV fil 
 $CSVPath = Read-Host -Prompt "Enter the full path to the CSV file"
 
-# Check if the CSV file exists
+# Tjek om fil eksistere
 if (-Not (Test-Path -Path $CSVPath)) {
     Write-Host "CSV file not found at $CSVPath. Please check the file path." -ForegroundColor Red
     exit
 }
 
-# Prompt the user for the AD OU path
+# Efterspør bruger om AD OU path
 $ADOUPath = Read-Host -Prompt "Enter the Active Directory OU path (e.g., OU=IT,DC=skole,DC=local)"
 
-# Import CSV data using the specified delimiter
+# Importer CSV data 
 $Users = Import-Csv -Path $CSVPath -Delimiter ';'
 $Domain = Read-Host -Prompt "Enter the domain (example.local)"
 
