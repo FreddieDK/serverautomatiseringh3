@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Backupped filer
-#backup="/home /var/spool/mail /etc /root /boot /opt"
-backup="/"
+backup="/home /var/spool/mail /etc /root /boot /opt"
+
 # Destination
 dest="/mnt/backup/serverbackups"
 
