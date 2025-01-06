@@ -1,31 +1,31 @@
 #!/bin/bash
 
-# Backup source: Everything from root directory except excluded folders
+# Backup alt fra yderst rod
 backup="/"
 
-# Exclude directories (e.g., /mnt, /proc, /sys, /dev, etc.)
+# Eksluder /mnt/ for eksterne mapped 
 exclude_dirs=("--exclude=/mnt")
 
 # Destination
 dest="/mnt/backup/serverbackups"
 
-# Create archive filename with date/time
+# Opret arkiveret fil med tidspunkt/dato
 tid=$(date +%d-%m-%Y)
 hostname=$(hostname -s)
 archive_fil="$hostname-$tid.tgz"
 
-# Print message to console
+# Print besked til konsol
 echo "Backing up $backup to $dest/$archive_fil"
 date
 echo
 
-# Archive/zip files while excluding specified directories
+# Arkiver alle filer/mapper men eksluder nævnte drevs i variablen "exclude_dirs"
 tar czf $dest/$archive_fil "${exclude_dirs[@]}" $backup
 
-# Print status message
+# Print status besked
 echo
 echo "Backup finished"
 date
 
-# Delete files older than 14 days
+# Slet filer ældre end 14 dage via find kommado
 find /mnt/backup/serverbackups -type f -mtime +14 -delete
