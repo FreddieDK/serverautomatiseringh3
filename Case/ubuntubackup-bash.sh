@@ -7,7 +7,7 @@ backup="/home /var/spool/mail /etc /root /boot /opt"
 dest="/mnt/backup/(Server Backup Mappe Navn)"
 
 # Opret arkiveret fil med tidspunkt/dato
-tid=$(date +"%Y%m%d-%H%M")
+tid=$(date +%d-%m-%Y)
 hostname=$(hostname -s)
 archive_fil="$hostname-$fil.tgz"
 
