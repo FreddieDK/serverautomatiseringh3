@@ -4,7 +4,7 @@
 backup="/"
 
 # Eksluder /mnt/ for eksterne mapped 
-exclude_dirs=("--exclude=/mnt")
+exclude_=("--exclude=/mnt")
 
 # Destination
 dest="/mnt/backup/serverbackups"
