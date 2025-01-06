@@ -15,6 +15,7 @@ $ADOUPath = Read-Host -Prompt "Enter the Active Directory OU path (e.g., OU=IT,D
 
 # Import CSV data using the specified delimiter
 $Users = Import-Csv -Path $CSVPath -Delimiter ';'
+$Domain = Read-Host -Prompt "Enter the domain (example.local)"
 
 # Loop through each user in the CSV file
 foreach ($User in $Users) {
@@ -22,7 +23,7 @@ foreach ($User in $Users) {
     $Username = $User.Username
     $Password = $User.Password | ConvertTo-SecureString -AsPlainText -Force
     $PhoneNumber = $User.Phonenumber
-    $Mail = "$Username@skole.local" # Construct email using username@skole.local
+    $Mail = "$Username@$Domain" # Construct email using username@skole.local
 
     # Define user properties
     $ADUserParams = @{
