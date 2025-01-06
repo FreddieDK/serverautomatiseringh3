@@ -4,7 +4,7 @@
 backup="/home /var/spool/mail /etc /root /boot /opt"
 
 # Destination
-dest="/mnt/backup/(Server Backup Mappe Navn)"
+dest="/mnt/backup/serverbackups"
 
 # Opret arkiveret fil med tidspunkt/dato
 tid=$(date +%d-%m-%Y)
@@ -12,7 +12,7 @@ hostname=$(hostname -s)
 archive_fil="$hostname-$tid.tgz"
 
 # Print besked I console
-echo "Backing op $backup til $dest/$archive_fil"
+echo "Backup op af $backup til $dest/$archive_fil"
 date
 echo
 
@@ -25,4 +25,4 @@ echo "Backup finished"
 date
 
 # slet filer ældre end 14 dage 
-find /mnt/backup/(Server Backup Mappe Navn) -type f -mtime +14 -delete
+find /mnt/backup/serverbackups -type f -mtime +14 -delete
