@@ -1,21 +1,26 @@
-# Henter info fra hardware
-$IC_ScriptBlock = {
-    $CIM_CS = Get-CimInstance -ClassName CIM_ComputerSystem
-    $CIM_Processor = Get-CimInstance -ClassName CIM_Processor
-    $CIM_Ram = Get-CimInstance -ClassName CIM_PhysicalMemory
+$computername = ""
+    Get-CpuUtilization -computername $computername
+    Get-MemoryUtilization -computername $computername
+    Get-DiskUtilization -computername $computername
+    [string]$computername
 
-    [PSCustomObject]@{
-        ComputerName = $CIM_CS.Name
-        Processor = $CIM_Processor.Name
-        ProcessorSpeed_Mhz = $CIM_Processor.MaxClockSpeed
-        RamSpeed = $CIM_Ram.Speed
+    function Get-CpuUtilization {
+
+    Get-WmiObject Win32_processor -ComputerName $computername |
+    Select-Object LoadPercentage, Name, NumberOfCores |
+    Format-Table -AutoSize
     }
-    $IC_ScriptBlock | Format-Table -AutoSize
+    
+    function Get-MemoryUtilization {
 
-    $IC_ScriptBlock | Export-Csv ".\System_Utility.csv"
+    Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computername |
+    Select-Object PSComputername, @{Name="TotalMemoryGB";Expression={[math]::Round(($_.TotalVisibleMemorySize/1GB),2)}}, @{Name="FreeMemoryGB";Expression={[math]::Round(($_.FreePhysicalMemory/1GB),2)}} |
+    Format-Table -AutoSize
+    }
+    
+    function Get-DiskUtilization {
 
-}
-
-$Computers = "LAPTOP-I651QOV4"
-Invoke-Command -ComputerName $Computers -ScriptBlock $IC_ScriptBlock -ErrorAction SilentlyContinue
-$CIM_Ram
+    Get-WmiObject -Class Win32_LogicalDisk -ComputerName $computername |
+    Select-Object SystemName, DeviceID, MediaType, @{Name="SizeGB";Expression={[math]::Round(($_.Size/1GB),2)}}, @{Name="FreeSpaceGB";Expression={[math]::Round(($_FreeSpace/1GB),2)}} |
+    Format-Table -AutoSize
+    }
