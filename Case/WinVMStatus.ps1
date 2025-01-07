@@ -1,5 +1,7 @@
-# Get total physical memory using performance counters (in MB)
-$totalRam = (Get-Counter '\Memory\Committed Bytes').CounterSamples.CookedValue / 1MB
+#https://stackoverflow.com/questions/6298941/how-do-i-find-the-cpu-and-ram-usage-using-powershell
+$totalRamString = (systeminfo | Select-String 'Total Physical Memory:').ToString().Split(':')[1].Trim()
+$totalRam = [double]($totalRamString -replace '[^\d.]', '') # Extract numeric part and convert to double
+$totalRam = $totalRam -replace ',' -replace ''
 $startTime = Get-Date
 $logDirectory = "C:\Logs"
 
