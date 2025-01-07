@@ -9,9 +9,24 @@ $BackupDestination = "\\192.168.25.10\Backup\serverbackups"
 # Define the retention period (in days)
 $RetentionDays = 14
 
+# Define the log file path
+$LogFilePath = Join-Path -Path C:\ -ChildPath "BackupLog.txt"
+
+# Function to log messages
+function Log-Message {
+    param (
+        [string]$Message,
+        [string]$Type = "INFO"  # INFO, ERROR, WARNING
+    )
+    $Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $LogEntry = "$Timestamp [$Type] $Message"
+    Add-Content -Path $LogFilePath -Value $LogEntry
+    Write-Host $LogEntry
+}
+
 # Create the destination folder if it doesn't exist
 if (-Not (Test-Path -Path $BackupDestination)) {
-    Write-Host "Creating backup destination folder: $BackupDestination"
+    Log-Message "Creating backup destination folder: $BackupDestination"
     New-Item -ItemType Directory -Path $BackupDestination | Out-Null
 }
 
@@ -22,29 +37,29 @@ $ArchiveFileName = "$ComputerName-$Timestamp.zip"
 $ArchiveFilePath = Join-Path -Path $BackupDestination -ChildPath $ArchiveFileName
 
 # Print start message
-Write-Host "Starting backup of folders: $BackupFolders"
-Write-Host "Backup destination: $BackupDestination"
-Write-Host "Archive file: $ArchiveFilePath"
+Log-Message "Starting backup of folders: $BackupFolders"
+Log-Message "Backup destination: $BackupDestination"
+Log-Message "Archive file: $ArchiveFilePath"
 
 # Create the zip archive
 try {
     Compress-Archive -Path $BackupFolders -DestinationPath $ArchiveFilePath -Force
-    Write-Host "Backup completed successfully!" -ForegroundColor Green
+    Log-Message "Backup completed successfully!" "INFO"
 } catch {
-    Write-Host "Error during backup: $_" -ForegroundColor Red
+    Log-Message "Error during backup: $_" "ERROR"
     exit 1
 }
 
 # Delete old backups
 try {
-    Write-Host "Deleting backup files older than $RetentionDays days..."
+    Log-Message "Deleting backup files older than $RetentionDays days..."
     Get-ChildItem -Path $BackupDestination -Filter "*.zip" | Where-Object {
         $_.LastWriteTime -lt (Get-Date).AddDays(-$RetentionDays)
     } | Remove-Item -Force
-    Write-Host "Old backups deleted successfully!" -ForegroundColor Green
+    Log-Message "Old backups deleted successfully!" "INFO"
 } catch {
-    Write-Host "Error while deleting old backups: $_" -ForegroundColor Red
+    Log-Message "Error while deleting old backups: $_" "ERROR"
 }
 
 # Print end message
-Write-Host "Backup process finished!" -ForegroundColor Cyan
+Log-Message "Backup process finished!" "INFO"
