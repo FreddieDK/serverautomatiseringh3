@@ -11,6 +11,9 @@ tid=$(date +%Y-%m-%d-%H-%M)
 hostname=$(hostname -s)
 archive_fil="$hostname-$tid.tgz"
 
+
+
+
 # Print besked I console
 echo "Backup op af $backup til $dest/$archive_fil"
 date
