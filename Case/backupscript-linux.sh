@@ -12,34 +12,27 @@ standard_destination="/etc/backup/serverbackups"
 tid=$(date +%d-%m-%Y-%H-%M)
 hostnavn=$(hostname -s)
 
-# Argument til at kunne vælge en anden ønsket destination
+# Tjekker første Argument for enten distination eller kilde lokation
 if [[ "$1" == "-destination" ]]; then
     read -p "Indtast den ønskede destination: " destination
 elif [[ "$1" == "-kilde" ]]; then
     read -p "Indtast den ønskede kilde: " kilde
+# Vælg standarde kilde eller destination hvis ikke valgt i argument
 else
-    # Hvis $1 ikke var -destination eller -kilde,
-    # så brug standardværdier i første omgang.
     destination="$standard_destination"
     kilde="$standard_kilde"
 fi
 
-# Tjekker andet argument
+# Tjekker andet argument for enten distination eller kilde lokation
 if [[ "$2" == "-destination" ]]; then
     read -p "Indtast den ønskede destination: " destination
 elif [[ "$2" == "-kilde" ]]; then
     read -p "Indtast den ønskede kilde: " kilde
 fi
 
-# Hvis ingen argumenter er indtastet, vælg standarde
+# Hvis ingen argumenter er indtastet, vælg standarde destination og kilde fra variabler 
 : "${destination:=$standard_destination}"
 : "${kilde:=$standard_kilde}"
-
-echo "Destination er: $destination"
-echo "Kilde er: $kilde"
-
-
-
 
 
 # Arkiver/zip en kopi af filerne til valgte lokation med hostnavn og tidspunkt i navnet
