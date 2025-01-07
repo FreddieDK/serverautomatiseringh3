@@ -12,7 +12,7 @@ standard_destination="/etc/backup/serverbackups"
 tid=$(date +%d-%m-%Y-%H-%M)
 hostnavn=$(hostname -s)
 
-# Tjekker første Argument for enten distination eller kilde lokation
+# Tjekker første Argument for enten destination eller kilde lokation
 if [[ "$1" == "-destination" ]]; then
     read -p "Indtast den ønskede destination: " destination
 elif [[ "$1" == "-kilde" ]]; then
@@ -42,18 +42,3 @@ zip -rv "$destination/backup_($hostnavn-$tid).zip" "$kilde"
 ## logs
 
 
-
-# Hjælp kommando funktion
-Help()
-{
-   
-   echo "Add description of the script functions here."
-   echo
-   echo "Syntax: scriptTemplate [-g|h|v|V]"
-   echo "options:"
-   echo "g     Print the GPL license notification."
-   echo "h     Print this Help."
-   echo "v     Verbose mode."
-   echo "V     Print software version and exit."
-   echo
-}
