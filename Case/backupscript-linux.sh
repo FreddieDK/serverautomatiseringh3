@@ -23,7 +23,7 @@ else
     kilde="$standard_kilde"
 fi
 
-# Tjekker andet argument for enten distination eller kilde lokation
+# Tjekker andet argument for enten destination eller kilde lokation
 if [[ "$2" == "-destination" ]]; then
     read -p "Indtast den ønskede destination: " destination
 elif [[ "$2" == "-kilde" ]]; then
