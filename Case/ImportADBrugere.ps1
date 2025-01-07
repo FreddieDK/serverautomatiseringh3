@@ -50,4 +50,4 @@ foreach ($User in $Users) {
 
 Write-Host "Bruger oprettet" -ForegroundColor Cyan
 
-PAUSE
+
