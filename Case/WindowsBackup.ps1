@@ -10,7 +10,7 @@ $BackupDestination = "\\192.168.25.10\Backup\serverbackups"
 $RetentionDays = 14
 
 # Define the log file path
-$LogFilePath = Join-Path -Path C:\ -ChildPath "BackupLog.txt"
+$LogFilePath = "C:\BackupLog.txt"
 
 # Function to log messages
 function Log-Message {
@@ -22,12 +22,6 @@ function Log-Message {
     $LogEntry = "$Timestamp [$Type] $Message"
     Add-Content -Path $LogFilePath -Value $LogEntry
     Write-Host $LogEntry
-}
-
-# Create the destination folder if it doesn't exist
-if (-Not (Test-Path -Path $BackupDestination)) {
-    Log-Message "Creating backup destination folder: $BackupDestination"
-    New-Item -ItemType Directory -Path $BackupDestination | Out-Null
 }
 
 # Create a timestamped archive filename
@@ -54,7 +48,7 @@ try {
 try {
     Log-Message "Deleting backup files older than $RetentionDays days..."
     Get-ChildItem -Path $BackupDestination -Filter "*.zip" | Where-Object {
-        $_.LastWriteTime -lt (Get-Date).AddDays(-$RetentionDays)
+        $_.LastWriteTime -lt (Get-Date).AddDays(-$RetentionDays) #Check om backups er less than accepted age
     } | Remove-Item -Force
     Log-Message "Old backups deleted successfully!" "INFO"
 } catch {
