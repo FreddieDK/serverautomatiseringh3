@@ -1,11 +1,11 @@
-$computername = ""
+$computername = "Server_Navn"
     Get-CpuUtilization -computername $computername
     Get-MemoryUtilization -computername $computername
     Get-DiskUtilization -computername $computername
-    [string]$computername
 
     function Get-CpuUtilization {
-
+    
+    [string]$computername
     Get-WmiObject Win32_processor -ComputerName $computername |
     Select-Object LoadPercentage, Name, NumberOfCores |
     Format-Table -AutoSize
