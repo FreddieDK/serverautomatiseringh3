@@ -29,6 +29,7 @@ while ($true) {
     $cpuTime = (Get-Counter '\Processor(_Total)\% Processor Time').CounterSamples.CookedValue
     $availMem = (Get-Counter '\Memory\Available MBytes').CounterSamples.CookedValue
     $availMemPercent = ($availMem / $totalRam) * 100
+    ((get-date) – (gcim Win32_OperatingSystem).LastBootUpTime).TotalHours
 
     # Format the log entry
     $logEntry = "$date;$($cpuTime.ToString("#,0.000"));$($availMem.ToString("N0"));$($availMemPercent.ToString("#,0.0"))"
@@ -42,3 +43,5 @@ while ($true) {
     # Pause for 2 seconds before the next iteration
     Start-Sleep -s 2
 }
+
+PAUSE
