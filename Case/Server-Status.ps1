@@ -10,8 +10,12 @@ $IC_ScriptBlock = {
         ProcessorSpeed_Mhz = $CIM_Processor.MaxClockSpeed
         RamSpeed = $CIM_Ram.Speed
     }
-    $IC_ScriptBlock | Export-Csv 
+    $IC_ScriptBlock | Format-Table -AutoSize
+
+    $IC_ScriptBlock | Export-Csv ".\System_Utility.csv"
+
 }
 
 $Computers = "LAPTOP-I651QOV4"
 Invoke-Command -ComputerName $Computers -ScriptBlock $IC_ScriptBlock -ErrorAction SilentlyContinue
+$CIM_Ram
