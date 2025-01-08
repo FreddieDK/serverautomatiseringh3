@@ -1,3 +1,5 @@
+﻿[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
 # Import-Module til AD cmdlets
 Import-Module ActiveDirectory
 
