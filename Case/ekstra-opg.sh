@@ -17,9 +17,9 @@ read -p "Hvad vil du ping?: " pingvalg
 # Funktion til at lave nslookup
 function nslookupnow(){
 
-# Funktion til at lave tracert
 }
 
+# Funktion til at lave tracert
 function tracertnow(){
 
     
