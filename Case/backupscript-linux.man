@@ -1,0 +1,17 @@
+.\" Manpage for backupscript-linux
+.\" Kontakt zbc@zbc.dk for fejl og andet
+.SH NAME
+Backupscript-linux
+
+.SH SYNOPSIS
+./backupscript-linux
+
+.SH DESCRIPTION
+Et simpelt script brugt til at zippe/kopier filer til en ønsket destination 
+
+.SH OPTIONS
+-kilde (Sæt hvad du ønsker at kopiere)
+-destination (Din ønsket destination for backup)
+
+.SH AUTHOR 
+ZBC 2025
