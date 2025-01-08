@@ -26,8 +26,10 @@ while ($true) {
                                -SamAccountName $user.SamAccountName `
                                -UserPrincipalName "$($user.SamAccountName)@test.local" `
                                -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force) 
-                Write-Host "Bruger $($user.Name) er oprettet."
-
+                #Write-Host "Bruger $($user.Name) er oprettet."
+                    # Aktiver brugeren
+                    Enable-ADAccount -Identity $user.SamAccountName
+                    Write-Host "Bruger $($user.Name) er oprettet og aktiveret."
                 } catch {
                     Write-Host "Fejl ved oprettelse af bruger $($user.Name): $_"
                 }
@@ -56,7 +58,10 @@ while ($true) {
                        -PassThru
 
 
-            Write-Host "Bruger $Name er oprettet."
+            #Write-Host "Bruger $Name er oprettet."
+                                # Aktiver brugeren
+                                Enable-ADAccount -Identity $user.SamAccountName
+                                Write-Host "Bruger $($user.Name) er oprettet og aktiveret."
         } catch {
             Write-Host "Fejl ved oprettelse af bruger $($Name): $_"
         }
