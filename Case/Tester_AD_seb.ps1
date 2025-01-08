@@ -24,16 +24,11 @@ while ($true) {
                                -GivenName $user.GivenName `
                                -Surname $user.Surname `
                                -SamAccountName $user.SamAccountName `
-                               -UserPrincipalName "$($user.SamAccountName)@domain.com" `
+                               -UserPrincipalName "$($user.SamAccountName)@test.local" `
+                               -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force) 
                                -Enabled $true `
-                               -PassThru
+                Write-Host "Bruger $($user.Name) er oprettet."
 
-                    # Konverter password til SecureString
-                    $passwordSecureString = ConvertTo-SecureString -String $user.Password -AsPlainText -Force
-
-                    # Sæt passwordet for brugeren
-                    Set-ADAccountPassword -Identity $user.SamAccountName -NewPassword $passwordSecureString -Reset
-                    Write-Host "Bruger $($user.Name) er oprettet og password er sat."
                 } catch {
                     Write-Host "Fejl ved oprettelse af bruger $($user.Name): $_"
                 }
@@ -58,15 +53,12 @@ while ($true) {
                        -Surname $Surname `
                        -SamAccountName $SamAccountName `
                        -UserPrincipalName "$SamAccountName@test.local" `
+                       -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) 
                        -Enabled $true `
                        -PassThru
 
-            # Konverter password til SecureString
-            $passwordSecureString = ConvertTo-SecureString -String $Password -AsPlainText -Force
 
-            # Sæt passwordet for brugeren
-            Set-ADAccountPassword -Identity $SamAccountName -NewPassword $passwordSecureString -Reset
-            Write-Host "Bruger $Name er oprettet og password er sat."
+            Write-Host "Bruger $Name er oprettet."
         } catch {
             Write-Host "Fejl ved oprettelse af bruger $($Name): $_"
         }
