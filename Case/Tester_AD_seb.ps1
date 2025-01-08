@@ -19,18 +19,21 @@ while ($true) {
             foreach ($user in $users) {
                 # Opret AD-bruger fra CSV data
                 try {
-                    # Sørg for at password er korrekt som SecureString
-                    $passwordSecureString = ConvertTo-SecureString -String $user.Password -AsPlainText -Force
-
+                    # Opret brugeren uden password
                     New-ADUser -Name $user.Name `
                                -GivenName $user.GivenName `
                                -Surname $user.Surname `
                                -SamAccountName $user.SamAccountName `
-                               -UserPrincipalName "$($user.SamAccountName)@domain.com"  # UPN skal oprettes baseret på SamAccountName
-                               -AccountPassword $passwordSecureString `
+                               -UserPrincipalName "$($user.SamAccountName)@domain.com" `
                                -Enabled $true `
                                -PassThru
-                    Write-Host "Bruger $($user.Name) er oprettet."
+
+                    # Konverter password til SecureString
+                    $passwordSecureString = ConvertTo-SecureString -String $user.Password -AsPlainText -Force
+
+                    # Sæt passwordet for brugeren
+                    Set-ADAccountPassword -Identity $user.SamAccountName -NewPassword $passwordSecureString -Reset
+                    Write-Host "Bruger $($user.Name) er oprettet og password er sat."
                 } catch {
                     Write-Host "Fejl ved oprettelse af bruger $($user.Name): $_"
                 }
@@ -49,18 +52,21 @@ while ($true) {
 
         # Opret AD-bruger med indtastede data
         try {
-            # Sørg for at password er korrekt som SecureString
-            $passwordSecureString = ConvertTo-SecureString -String $Password -AsPlainText -Force
-
+            # Opret brugeren uden password
             New-ADUser -Name $Name `
                        -GivenName $GivenName `
                        -Surname $Surname `
                        -SamAccountName $SamAccountName `
-                       -UserPrincipalName "$SamAccountName@domain.com"  # UPN skal oprettes baseret på SamAccountName
-                       -AccountPassword $passwordSecureString `
+                       -UserPrincipalName "$SamAccountName@test.local" `
                        -Enabled $true `
                        -PassThru
-            Write-Host "Bruger $Name er oprettet."
+
+            # Konverter password til SecureString
+            $passwordSecureString = ConvertTo-SecureString -String $Password -AsPlainText -Force
+
+            # Sæt passwordet for brugeren
+            Set-ADAccountPassword -Identity $SamAccountName -NewPassword $passwordSecureString -Reset
+            Write-Host "Bruger $Name er oprettet og password er sat."
         } catch {
             Write-Host "Fejl ved oprettelse af bruger $($Name): $_"
         }
