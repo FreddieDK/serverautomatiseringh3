@@ -1,9 +1,6 @@
-Name;GivenName;Surname;Password
-Ida Jensen;Ida;Jensen;EnsKode123!
-Laura Larsen;Laura;Larsen;EnsKode123!
-Frederik Larsen;Frederik;Larsen;EnsKode123!
-Frederik Pedersen;Frederik;Pedersen;EnsKode123!
-Laura Mortensen;Laura;Mortensen;EnsKode123!
-Mathias Pedersen;Mathias;Pedersen;EnsKode123!
-Emil Pedersen;Emil;Pedersen;EnsKode123!
-Mathias Larsen;Mathias;Larsen;EnsKode123!
+Name;GivenNam;Surname;Password;SamAccountName
+Anna Hansen;Anna;Hansen;EnsKode123!;anna.hansen9
+Lucas Christensen;Lucas;Christensen;EnsKode123!;lucas.christensen10
+Mia Nielsen;Mia;Nielsen;EnsKode123!;mia.nielsen11
+Oscar Thomsen;Oscar;Thomsen;EnsKode123!;oscar.thomsen12
+Ida Eriksen;Ida;Eriksen;EnsKode123!;ida.eriksen13
