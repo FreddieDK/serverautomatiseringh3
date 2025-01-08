@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# Funktion til at lave ping
+function pingnow(){
+read -p "Hvad vil du ping?: " pingvalg
+ping $pingvalg 
+}
+
+# Funktion til at lave nslookup
+#function nslookupnow(){
+
+#}
+
+# Funktion til at lave tracert
+#function tracertnow(){
+
+    
+#}
+
+# Besked ved kørsel af script
+
 echo "Hvad vil du gerne teste?:"
 
 echo "1 - Ping (Ping en IP eller domain)"
@@ -8,22 +27,7 @@ echo "3 - tracert (Tjekke om fejl på routning til en bestemt lokation)"
 
 read valg
 
-# Funktion til at lave ping
-function pingnow(){
-read -p "Hvad vil du ping?: " pingvalg
-
-}
-
-# Funktion til at lave nslookup
-function nslookupnow(){
-
-}
-
-# Funktion til at lave tracert
-function tracertnow(){
-
-    
-}
+# Valg af funktion-kørsel
 
 if [[ "$valg" == "1" ]]; then
     pingnow
