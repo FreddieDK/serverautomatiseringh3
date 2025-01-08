@@ -12,12 +12,12 @@ read -p "Hvad vil du tjekke? (Ping IP el. Domain): " pingvalg
 
 # Funktion til at lave nslookup
 function nslookupnow(){
-read -p "Hvilket domain vil du tjekke?" domainvalg
-read -p "Hvillken dns server vil du bruge? (Standard 1.1.1.1)" dnsvalg
-    if [[ $dnsvlag <= 1.1.1.1 ]]
-        nslookup $domainvalg $dnsvalg 
+read -p "Hvilket domain vil du tjekke?: " domainvalg
+read -p "Hvillken dns server vil du bruge?: (Standard 1.1.1.1) " dnsvalg
+    if [[ $dnsvlag == null ]]; then
+        nslookup $domainvalg 1.1.1.1 
     else
-        nslookup $domainvalg 1.1.1.1
+        nslookup $domainvalg dnsvalg
     fi
 }
 
