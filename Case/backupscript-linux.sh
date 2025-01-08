@@ -2,6 +2,24 @@
 
 # Script til backup af filer på bash CLI'er
 
+## Hjælp // manual kommando
+
+.SH NAME
+Backupscript-linux
+.SH SYNOPSIS
+./backupscript-linux
+.SH DESCRIPTION
+Et simpelt script brugt til at zippe/kopier filer til en ønsket destination 
+.sh OPTIONS
+-kilde (Sæt hvad du ønsker at kopiere)
+-destination (Sæt din ønsket destination for backup)
+.SH AUTHOR 
+ZBC 2025
+
+
+
+
+
 # Variabel til standard source af filer 
 standard_kilde="/home"
 
@@ -39,17 +57,7 @@ fi
 zip -rv "$destination/backup_($hostnavn-$tid).zip" "$kilde"
 
 
-## Hjælp // manual kommando
 
-.SH NAME
-Backupscript-linux
-.SH DESCRIPTION
-Et simpelt script brugt til at zippe/kopier filer til en ønsket destination 
-.sh OPTIONS
--kilde (Sæt hvad du ønsker at kopiere)
--destination (Sæt din ønsket destination for backup)
-.SH AUTHOR 
-ZBC 2025
 
 
 
