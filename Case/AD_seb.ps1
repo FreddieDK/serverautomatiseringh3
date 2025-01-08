@@ -14,6 +14,8 @@ Version: 0.2
 
 # Import-Module til AD cmdlets
 Import-Module ActiveDirectory
+#Tvinger terminalen til at bruge UTF-8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Start en løkke for at give flere valgmuligheder
 while ($true) {
