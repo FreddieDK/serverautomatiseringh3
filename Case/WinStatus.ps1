@@ -11,7 +11,7 @@ if (-not (Test-Path $logDirectory)) {
 
 # Generate a timestamped log file name
 $timestamp = $startTime.ToString("yyyyMMdd_HHmmss")
-$logFile = Join-Path $logDirectory "SystemMetrics_$timestamp.csv"
+$logFile = Join-Path $logDirectory "SystemMetrics_$timestamp.txt"
 
 # Write CSV headers
 "Timestamp;CPU (%);Available Memory (MB);Available Memory (%);Total Disk Space (GB);Used Disk Space (GB);Disk Usage (%);Uptime(Hours)" | Out-File -FilePath $logFile -Encoding UTF8
