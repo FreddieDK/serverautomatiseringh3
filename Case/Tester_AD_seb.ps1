@@ -26,7 +26,6 @@ while ($true) {
                                -SamAccountName $user.SamAccountName `
                                -UserPrincipalName "$($user.SamAccountName)@test.local" `
                                -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force) 
-                               -Enabled $true `
                 Write-Host "Bruger $($user.Name) er oprettet."
 
                 } catch {
@@ -54,7 +53,6 @@ while ($true) {
                        -SamAccountName $SamAccountName `
                        -UserPrincipalName "$SamAccountName@test.local" `
                        -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) 
-                       -Enabled $true `
                        -PassThru
 
 
