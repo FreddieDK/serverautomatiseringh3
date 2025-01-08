@@ -40,7 +40,7 @@ while ($true) {
                                -Surname $user.Surname `
                                -SamAccountName $user.SamAccountName `
                                -UserPrincipalName "$($user.SamAccountName)@domain.com"  # UPN skal oprettes baseret på SamAccountName
-                               -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force) `
+                               -AccountPassword (ConvertTo-SecureString -String $user.Password -AsPlainText -Force) `
                                -Enabled $true `
                                -PassThru
                     Write-Host "Bruger $($user.Name) er oprettet."
