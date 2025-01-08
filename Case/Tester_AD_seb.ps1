@@ -1,19 +1,3 @@
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-
-<#
-Dette script opretter brugere i AD. 
-
-Ved start af script bliver brugeren mødt af 3 valgmuligheder
-
-1: "Indlæs fra CSV-fil" - Brugeren skal indtaste filstien til CSV-filen, hvorefter at sciptet læser og opretter brugere ud fra dataen.
-2: "Indtast manuelt" - Brugeren skal manuelt indtaste data udfra de prompter der kommer i terminalen, hvorefter scriptet opretter brugeren.
-3: "Hjælp - Beskrivelse af scriptet" - Hjælpemenu der beskriver hvad de 2 valg gør, samt kontaktinformation for udvikleren af scriptet.
-
-AUTHOR: Sebastian Nielsen - seba214h@zbc.dk
-
-Version: 0.2
-#>
-
 # Import-Module til AD cmdlets
 Import-Module ActiveDirectory
 
@@ -35,18 +19,20 @@ while ($true) {
             foreach ($user in $users) {
                 # Opret AD-bruger fra CSV data
                 try {
+                    # Sørg for at password er korrekt som SecureString
+                    $passwordSecureString = ConvertTo-SecureString -String $user.Password -AsPlainText -Force
+
                     New-ADUser -Name $user.Name `
                                -GivenName $user.GivenName `
                                -Surname $user.Surname `
                                -SamAccountName $user.SamAccountName `
                                -UserPrincipalName "$($user.SamAccountName)@domain.com"  # UPN skal oprettes baseret på SamAccountName
-                               -AccountPassword (ConvertTo-SecureString -String $user.Password -AsPlainText -Force) `
+                               -AccountPassword $passwordSecureString `
                                -Enabled $true `
                                -PassThru
                     Write-Host "Bruger $($user.Name) er oprettet."
                 } catch {
                     Write-Host "Fejl ved oprettelse af bruger $($user.Name): $_"
-                    Write-Host "Fejl: $($_.Exception.Message)"
                 }
             }
         } else {
@@ -63,27 +49,33 @@ while ($true) {
 
         # Opret AD-bruger med indtastede data
         try {
+            # Sørg for at password er korrekt som SecureString
+            $passwordSecureString = ConvertTo-SecureString -String $Password -AsPlainText -Force
+
             New-ADUser -Name $Name `
                        -GivenName $GivenName `
                        -Surname $Surname `
                        -SamAccountName $SamAccountName `
-                       -UserPrincipalName "$($SamAccountName)@domain.com"  # Erstat med dit domæne
-                       -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) `
+                       -UserPrincipalName "$SamAccountName@domain.com"  # UPN skal oprettes baseret på SamAccountName
+                       -AccountPassword $passwordSecureString `
                        -Enabled $true `
                        -PassThru
             Write-Host "Bruger $Name er oprettet."
         } catch {
             Write-Host "Fejl ved oprettelse af bruger $($Name): $_"
-            Write-Host "Fejl: $($_.Exception.Message)"
         }
 
     } elseif ($choice -eq "3") {
         # Hjælp - Beskrivelse af scriptet
         Write-Host "Dette script giver dig mulighed for at oprette brugere i Active Directory på to måder:"
         Write-Host "`n1. Indlæsning fra en CSV-fil: Du angiver stien til en CSV-fil, der indeholder brugeroplysninger. Scriptet opretter brugerne automatisk baseret på denne fil."
+
         Write-Host "`n2. Manuel indtastning: Du indtaster brugeroplysninger direkte i terminalen, og scriptet opretter brugeren."
+
         Write-Host "`nCSV-filen skal have følgende kolonner: Name, GivenName, Surname og Password."
+
         Write-Host "`nSørg for, at du har de nødvendige rettigheder til at oprette brugere i Active Directory."
+
         Write-Host "`nKontakt Sebastian ved fejl i scriptet på seba214h@zbc.dk"
 
     } elseif ($choice -eq "4") {
