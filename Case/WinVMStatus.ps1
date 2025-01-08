@@ -15,7 +15,7 @@ if (-not (Test-Path $logDirectory)) {
 $timestamp = $startTime.ToString("yyyyMMdd_HHmmss")
 $logFile = Join-Path $logDirectory "SystemMetrics_$timestamp.txt"
 
-# Write CSV headers
+# Write TXT headers
 "Timestamp;CPU (%);Available Memory (MB);Available Memory (%);Total Disk Space (GB);Used Disk Space (GB);Disk Usage (%);Uptime(Hours)" | Out-File -FilePath $logFile -Encoding UTF8
 
 while ($true) {
@@ -45,7 +45,7 @@ while ($true) {
     # Format the log entry
     $logEntry = "$date;$($cpuTime.ToString("#,0.000"));$($availMem.ToString("N0"));$($availMemPercent.ToString("#,0.0"));$totalDisk;$usedDisk;$diskUsagePercent;$uptime"
 
-    # Append the log entry to the CSV file
+    # Append the log entry to the TXT file
     $logEntry | Out-File -FilePath $logFile -Append -Encoding UTF8
 
     # Display the current metrics in the console
