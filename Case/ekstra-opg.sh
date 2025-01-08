@@ -23,7 +23,7 @@
 
     #Funktion til at lave tracert
     function tracertnow(){
-        echo "test"
+        read -p "Hvad vil tjekke routningen til?"
     }
 
     # Besked ved kørsel af script
