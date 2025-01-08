@@ -8,15 +8,16 @@ echo "3 - tracert (Tjekke om fejl på routning til en bestemt lokation)"
 
 read valg
 
-
+# Funktion til at lave ping
 function pingnow(){
-
+read -p "Hvad vil du ping?: " pingvalg
 
 }
 
+# Funktion til at lave nslookup
 function nslookupnow(){
 
-    
+# Funktion til at lave tracert
 }
 
 function tracertnow(){
