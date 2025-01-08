@@ -46,7 +46,7 @@ do
     echo $LOG_ENTRY >> $LOG_FILE
 
     # Display the current metrics in the console
-    echo "$TIMESTAMP > CPU: $CPU_USAGE%, Avail. Mem.: ${AVAILABLE_MEM}MB (${AVAILABLE_MEM_PERCENT}%), Disk: ${USED_DISK}GB/${TOTAL_DISK}GB (${DISK_USAGE}%), Uptime: $UPTIME"
+    echo "$TIMESTAMP > CPU: $CPU_USAGE%, Avail. Mem.: ${AVAILABLE_MEM}MB (${AVAILABLE_MEM_PERCENT}%), Disk: ${USED_DISK}GB/${TOTAL_DISK}GB (${DISK_USAGE}%), Uptime(Hours): $UPTIME"
 
     # Pause for 2 seconds before the next iteration
     sleep 2
