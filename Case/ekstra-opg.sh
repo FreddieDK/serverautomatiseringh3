@@ -12,12 +12,12 @@ read -p "Hvad vil du tjekke? (Ping IP el. Domain): " pingvalg
 
 # Funktion til at lave nslookup
 function nslookupnow(){
-read -p "Hvilket domain vil du tjekke?" domainvalg
-read -p "Hvillken dns server vil du bruge? (Standard 1.1.1.1)" dnsvalg
-    if [[ $dnsvlag <= 1.1.1.1 ]]
-        nslookup $domainvalg $dnsvalg 
+read -p "Hvilket domain vil du tjekke?: " domainvalg
+read -p "Hvillken dns server vil du bruge?: (Standard 1.1.1.1) " dnsvalg
+    if [[ $dnsvlag == null ]]; then
+        nslookup $domainvalg 1.1.1.1 
     else
-        nslookup $domainvalg 1.1.1.1
+        nslookup $domainvalg dnsvalg
     fi
 }
 
@@ -34,6 +34,7 @@ echo "Hvad vil du gerne teste?:"
 echo "1 - Tjek server-status (Ping en IP eller domain)"
 echo "2 - nslookup (Tjek om dns fungere)"
 echo "3 - tracert (Tjekke om fejl på routning til en bestemt lokation)"
+echo "4 - Alle (Køre alle funktioner i script)"
 
 read valg
 
@@ -44,6 +45,10 @@ if [[ "$valg" == "1" ]]; then
 elif [[ "$valg" == "2" ]]; then
     nslookupnow
 elif [[ "$valg" == "3" ]]; then
+    tracertnow
+elif [[ "$valg" == "4 "]]; then
+    pingnow
+    nslookupnow
     tracertnow
 else
     echo "Dette er ikke en gyldig valgmulighed"
