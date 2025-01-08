@@ -2,6 +2,9 @@
 
 # Script til backup af filer på bash CLI'er
 
+# Man-page // help 
+/backupscript-linux.man
+
 # Variabel til standard source af filer 
 standard_kilde="/home"
 
