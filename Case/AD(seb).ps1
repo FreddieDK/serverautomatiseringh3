@@ -7,8 +7,7 @@ Ved start af script bliver brugeren mødt af 3 valgmuligheder
 2: "Indtast manuelt" - Brugeren skal manuelt indtaste data udfra de prompter der kommer i terminalen, hvorefter scriptet opretter brugeren.
 3: "Hjælp - Beskrivelse af scriptet" - Hjælpemenu der beskriver hvad de 2 valg gør, samt kontaktinformation for udvikleren af scriptet.
 
-AUTHOR: 
-Sebastian Nielsen - seba214h@zbc.dk
+AUTHOR: Sebastian Nielsen - seba214h@zbc.dk
 
 Version: 0.2
 #>
@@ -16,12 +15,15 @@ Version: 0.2
 # Import-Module til AD cmdlets
 Import-Module ActiveDirectory
 
+# Start en løkke for at give flere valgmuligheder
+while ($true) {
 # Valgmulighed for brugerinput
 Write-Host "Vælg inputmetode:"
 Write-Host "1: Indlæs fra CSV-fil"
 Write-Host "2: Indtast manuelt"
 Write-Host "3: Hjælp - Beskrivelse af scriptet"
-$choice = Read-Host "Indtast dit valg (1, 2 eller 3)"
+Write-Host "4: Afslut"
+$choice = Read-Host "Indtast dit valg (1, 2, 3 eller 4)"
 
 if ($choice -eq "1") {
     # Indlæs fra CSV-fil
@@ -74,7 +76,11 @@ if ($choice -eq "1") {
     Write-Host "`nSørg for, at du har de nødvendige rettigheder til at oprette brugere i Active Directory."
 
     Write-Host "`nKontakt Sebastian ved fejl i scriptet på seba214h@zbc.dk"
-
+} elseif ($choice -eq "4") {
+    # Afslut scriptet
+    Write-Host "Scriptet afsluttes."
+    break
 } else {
     Write-Host "Ugyldigt valg. Scriptet afsluttes."
+}
 }
