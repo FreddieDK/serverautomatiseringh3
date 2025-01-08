@@ -33,13 +33,12 @@ while ($true) {
 
     # Get disk usage
     $disk = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Name -eq "C" }
-    $totalDisk = [math]::Round($disk.Used + $disk.Free / 1GB, 2)
+    $totalDisk = (($disk.Used + $Disk.Free)/1GB)
     $usedDisk = [math]::Round($disk.Used / 1GB, 2)
     $diskUsagePercent = [math]::Round(($disk.Used / ($disk.Used + $disk.Free)) * 100, 2)
 
     # Get uptime
     $uptime = ((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime).TotalHours
-    $uptime = $uptime -replace ',' -replace '.'
 
     # Format the log entry
     $logEntry = "$date;$($cpuTime.ToString("#,0.000"));$($availMem.ToString("N0"));$($availMemPercent.ToString("#,0.0"));$totalDisk;$usedDisk;$diskUsagePercent;$uptime"
