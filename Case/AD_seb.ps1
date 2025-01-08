@@ -29,7 +29,7 @@ if ($choice -eq "1") {
     # Indlæs fra CSV-fil
     $csvPath = Read-Host "Indtast stien til CSV-filen"
     if (Test-Path $csvPath) {
-        $users = Import-Csv -Path $csvPath
+        $users = Import-Csv -Path $csvPath -Delimiter ";"
         foreach ($user in $users) {
             # Opret AD-bruger fra CSV data
             try {
