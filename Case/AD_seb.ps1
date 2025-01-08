@@ -1,3 +1,4 @@
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 <#
 Dette script opretter brugere i AD. 
 
@@ -14,6 +15,8 @@ Version: 0.2
 
 # Import-Module til AD cmdlets
 Import-Module ActiveDirectory
+#Tvinger terminalen til at bruge UTF-8
+
 
 # Start en løkke for at give flere valgmuligheder
 while ($true) {
@@ -29,7 +32,7 @@ if ($choice -eq "1") {
     # Indlæs fra CSV-fil
     $csvPath = Read-Host "Indtast stien til CSV-filen"
     if (Test-Path $csvPath) {
-        $users = Import-Csv -Path $csvPath
+        $users = Import-Csv -Path $csvPath -Delimiter ";"
         foreach ($user in $users) {
             # Opret AD-bruger fra CSV data
             try {

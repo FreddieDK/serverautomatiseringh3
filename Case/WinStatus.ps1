@@ -11,9 +11,9 @@ if (-not (Test-Path $logDirectory)) {
 
 # Generate a timestamped log file name
 $timestamp = $startTime.ToString("yyyyMMdd_HHmmss")
-$logFile = Join-Path $logDirectory "SystemMetrics_$timestamp.csv"
+$logFile = Join-Path $logDirectory "SystemMetrics_$timestamp.txt"
 
-# Write CSV headers
+# Write TXT headers
 "Timestamp;CPU (%);Available Memory (MB);Available Memory (%);Total Disk Space (GB);Used Disk Space (GB);Disk Usage (%);Uptime(Hours)" | Out-File -FilePath $logFile -Encoding UTF8
 
 while ($true) {
@@ -33,18 +33,17 @@ while ($true) {
 
     # Get disk usage
     $disk = Get-PSDrive -PSProvider FileSystem | Where-Object { $_.Name -eq "C" }
-    $totalDisk = [math]::Round($disk.Used + $disk.Free / 1GB, 2)
+    $totalDisk = (($disk.Used + $Disk.Free)/1GB)
     $usedDisk = [math]::Round($disk.Used / 1GB, 2)
     $diskUsagePercent = [math]::Round(($disk.Used / ($disk.Used + $disk.Free)) * 100, 2)
 
     # Get uptime
     $uptime = ((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime).TotalHours
-    $uptime = $uptime -replace ',' -replace '.'
 
     # Format the log entry
     $logEntry = "$date;$($cpuTime.ToString("#,0.000"));$($availMem.ToString("N0"));$($availMemPercent.ToString("#,0.0"));$totalDisk;$usedDisk;$diskUsagePercent;$uptime"
 
-    # Append the log entry to the CSV file
+    # Append the log entry to the TXT file
     $logEntry | Out-File -FilePath $logFile -Append -Encoding UTF8
 
     # Display the current metrics in the console
