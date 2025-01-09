@@ -23,7 +23,8 @@
 
     #Funktion til at lave tracert
     function tracertnow(){
-        read -p "Hvad vil tjekke routningen til?"
+        read -p "Hvad vil tjekke routningen til?" tracertvalg
+        tracepath -m 15 $tracertvalg
     }
 
     # Besked ved kørsel af script
