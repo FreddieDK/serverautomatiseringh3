@@ -11,8 +11,8 @@ $form.StartPosition = "CenterScreen"
 $outputBox = New-Object System.Windows.Forms.TextBox
 $outputBox.Multiline = $true
 $outputBox.ScrollBars = "Vertical"
-$outputBox.Size = New-Object System.Drawing.Size(350, 120)
-$outputBox.Location = New-Object System.Drawing.Point(20, 120)
+$outputBox.Size = New-Object System.Drawing.Size(350, 100)
+$outputBox.Location = New-Object System.Drawing.Point(20, 140)
 $form.Controls.Add($outputBox)
 
 # Funktion til CSV-indlæsning
