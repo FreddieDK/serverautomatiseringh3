@@ -11,8 +11,8 @@ $form.StartPosition = "CenterScreen"
 $outputBox = New-Object System.Windows.Forms.TextBox
 $outputBox.Multiline = $true
 $outputBox.ScrollBars = "Vertical"
-$outputBox.Size = New-Object System.Drawing.Size(350, 150)
-$outputBox.Location = New-Object System.Drawing.Point(20, 80)
+$outputBox.Size = New-Object System.Drawing.Size(350, 120)
+$outputBox.Location = New-Object System.Drawing.Point(20, 120)
 $form.Controls.Add($outputBox)
 
 # Funktion til CSV-indlæsning
@@ -48,7 +48,7 @@ function LoadFromCSV {
 function ManualEntry {
     $inputForm = New-Object System.Windows.Forms.Form
     $inputForm.Text = "Manuel Bruger Oprettelse"
-    $inputForm.Size = New-Object System.Drawing.Size(400, 400)
+    $inputForm.Size = New-Object System.Drawing.Size(400, 300)
     $inputForm.StartPosition = "CenterScreen"
 
     # Felter til brugerdata
@@ -70,7 +70,7 @@ function ManualEntry {
     # Opret knap
     $submitButton = New-Object System.Windows.Forms.Button
     $submitButton.Text = "Opret Bruger"
-    $submitButton.Location = New-Object System.Drawing.Point(150, 240)
+    $submitButton.Location = New-Object System.Drawing.Point(150, 220)
     $submitButton.Add_Click({
         try {
             New-ADUser -Name $fields["Navn"].Text `
@@ -108,7 +108,7 @@ Sørg for, at du har de nødvendige rettigheder til at oprette brugere i Active 
 }
 
 # Knapper i hovedmenuen
-$buttons = @("Indlæs fra CSV", "Manuel Indtastning", "Hjælp", "Afslut")
+$buttons = @("Indlæs fra CSV-fil", "Manuel Indtastning", "Hjælp - Beskrivelse af scriptet", "Afslut")
 $actions = @([scriptblock]::Create("LoadFromCSV"), 
              [scriptblock]::Create("ManualEntry"), 
              [scriptblock]::Create("ShowHelp"), 
@@ -117,7 +117,7 @@ $actions = @([scriptblock]::Create("LoadFromCSV"),
 for ($i = 0; $i -lt $buttons.Length; $i++) {
     $button = New-Object System.Windows.Forms.Button
     $button.Text = $buttons[$i]
-    $button.Size = New-Object System.Drawing.Size(150, 30)
+    $button.Size = New-Object System.Drawing.Size(350, 30)
     $button.Location = New-Object System.Drawing.Point(20, 20 + ($i * 40))
     $button.Add_Click($actions[$i])
     $form.Controls.Add($button)
