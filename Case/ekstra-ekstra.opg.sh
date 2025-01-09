@@ -25,4 +25,9 @@ case $land in
         clear
         echo "Tiden I Canada er: $(zdump Canada/Central | awk '{print $5}')"
     ;;
+
+    *)
+        clear
+        echo "Tiden for $land kendes ikke.."
+    ;;
 esac
