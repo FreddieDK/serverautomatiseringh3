@@ -1,5 +1,7 @@
     #!/bin/bash
     
+    # Kort eksempel til øvelse funktioner
+
     # Funktion til at lave ping
     function pingnow(){
     read -p "Hvad vil du tjekke? (Ping IP el. Domain): " pingvalg
