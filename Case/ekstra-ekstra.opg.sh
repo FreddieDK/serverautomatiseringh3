@@ -2,6 +2,7 @@
 
 # Kort eksempel til øvelse af CASE // Switch
 
+clear
 read -p "Hvilet land vil du kende tiden til?: " land
 
 case $land in
@@ -16,10 +17,12 @@ case $land in
     ;;
 
     Japan)
-    echo "Tiden i Japan er: $(zdump Asia/Tokyo | awk '{print $5}')"
+        clear
+        echo "Tiden i Japan er: $(zdump Asia/Tokyo | awk '{print $5}')"
     ;;
 
     Canada)
-    echo "Tiden I Canada er: $(zdump Canada/Central | awk '{print $5}')"
+        clear
+        echo "Tiden I Canada er: $(zdump Canada/Central | awk '{print $5}')"
     ;;
 esac
