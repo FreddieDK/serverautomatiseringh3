@@ -23,7 +23,8 @@
 
     #Funktion til at lave tracert
     function tracertnow(){
-        read -p "Hvad vil tjekke routningen til?"
+        read -p "Hvad vil tjekke routningen til? " tracertvalg
+        tracepath -m 15 $tracertvalg
     }
 
     # Besked ved kørsel af script
@@ -40,12 +41,16 @@
     # Valg af funktion-kørsel
 
     if [[ "$valg" == "1" ]]; then
+        echo "Du har valgt ping funktionen"
         pingnow
     elif [[ "$valg" == "2" ]]; then
+        echo "Du har valgt nslookup funktionen"
         nslookupnow
     elif [[ "$valg" == "3" ]]; then
+        echo "Du har valgt tracert funktionen"
         tracertnow
     elif [[ "$valg" == "4" ]]; then
+        echo "Du har valgt at køre alle funktioner i scriptet"
         pingnow
         nslookupnow
         tracertnow
