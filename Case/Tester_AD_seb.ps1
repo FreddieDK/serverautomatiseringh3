@@ -1,108 +1,126 @@
-﻿# Importer nødvendige moduler
-Add-Type -AssemblyName System.Windows.Forms
+﻿Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
-Import-Module ActiveDirectory
 
-# Opret formular
+# Opret hovedvinduet
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "AD User Creation Tool"
-$form.Size = New-Object System.Drawing.Size(600, 400)
+$form.Text = "AD Bruger Oprettelse"
+$form.Size = New-Object System.Drawing.Size(400, 300)
 $form.StartPosition = "CenterScreen"
 
-# Label og tekstbokse til input
-$lblName = New-Object System.Windows.Forms.Label
-$lblName.Text = "Navn:"
-$lblName.Location = New-Object System.Drawing.Point(20, 20)
-$form.Controls.Add($lblName)
+# Tilføj en tekstboks til output
+$outputBox = New-Object System.Windows.Forms.TextBox
+$outputBox.Multiline = $true
+$outputBox.ScrollBars = "Vertical"
+$outputBox.Size = New-Object System.Drawing.Size(350, 150)
+$outputBox.Location = New-Object System.Drawing.Point(20, 80)
+$form.Controls.Add($outputBox)
 
-$txtName = New-Object System.Windows.Forms.TextBox
-$txtName.Location = New-Object System.Drawing.Point(150, 20)
-$txtName.Size = New-Object System.Drawing.Size(200, 20)
-$form.Controls.Add($txtName)
+# Funktion til CSV-indlæsning
+function LoadFromCSV {
+    $openFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+    $openFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*"
+    $openFileDialog.ShowDialog() | Out-Null
+    $csvPath = $openFileDialog.FileName
+    if ($csvPath -ne "") {
+        try {
+            $users = Import-Csv -Path $csvPath -Delimiter ";"
+            foreach ($user in $users) {
+                try {
+                    New-ADUser -Name $user.Name `
+                               -GivenName $user.GivenName `
+                               -Surname $user.Surname `
+                               -SamAccountName $user.SamAccountName `
+                               -UserPrincipalName "$($user.SamAccountName)@test.local" `
+                               -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force)
+                    Enable-ADAccount -Identity $user.SamAccountName
+                    $outputBox.AppendText("Bruger $($user.Name) oprettet og aktiveret.`r`n")
+                } catch {
+                    $outputBox.AppendText("Fejl ved oprettelse af bruger $($user.Name): $_`r`n")
+                }
+            }
+        } catch {
+            $outputBox.AppendText("Fejl ved indlæsning af CSV-fil: $_`r`n")
+        }
+    }
+}
 
-$lblGivenName = New-Object System.Windows.Forms.Label
-$lblGivenName.Text = "Fornavn:"
-$lblGivenName.Location = New-Object System.Drawing.Point(20, 60)
-$form.Controls.Add($lblGivenName)
+# Funktion til manuel indtastning
+function ManualEntry {
+    $inputForm = New-Object System.Windows.Forms.Form
+    $inputForm.Text = "Manuel Bruger Oprettelse"
+    $inputForm.Size = New-Object System.Drawing.Size(400, 400)
+    $inputForm.StartPosition = "CenterScreen"
 
-$txtGivenName = New-Object System.Windows.Forms.TextBox
-$txtGivenName.Location = New-Object System.Drawing.Point(150, 60)
-$txtGivenName.Size = New-Object System.Drawing.Size(200, 20)
-$form.Controls.Add($txtGivenName)
+    # Felter til brugerdata
+    $labels = @("Navn", "Fornavn", "Efternavn", "SamAccountName", "Password")
+    $fields = @{}
 
-$lblSurname = New-Object System.Windows.Forms.Label
-$lblSurname.Text = "Efternavn:"
-$lblSurname.Location = New-Object System.Drawing.Point(20, 100)
-$form.Controls.Add($lblSurname)
+    for ($i = 0; $i -lt $labels.Length; $i++) {
+        $label = New-Object System.Windows.Forms.Label
+        $label.Text = $labels[$i]
+        $label.Location = New-Object System.Drawing.Point(20, 20 + ($i * 40))
+        $inputForm.Controls.Add($label)
 
-$txtSurname = New-Object System.Windows.Forms.TextBox
-$txtSurname.Location = New-Object System.Drawing.Point(150, 100)
-$txtSurname.Size = New-Object System.Drawing.Size(200, 20)
-$form.Controls.Add($txtSurname)
-
-$lblSamAccountName = New-Object System.Windows.Forms.Label
-$lblSamAccountName.Text = "Brugernavn (SamAccountName):"
-$lblSamAccountName.Location = New-Object System.Drawing.Point(20, 140)
-$form.Controls.Add($lblSamAccountName)
-
-$txtSamAccountName = New-Object System.Windows.Forms.TextBox
-$txtSamAccountName.Location = New-Object System.Drawing.Point(150, 140)
-$txtSamAccountName.Size = New-Object System.Drawing.Size(200, 20)
-$form.Controls.Add($txtSamAccountName)
-
-$lblPassword = New-Object System.Windows.Forms.Label
-$lblPassword.Text = "Adgangskode:"
-$lblPassword.Location = New-Object System.Drawing.Point(20, 180)
-$form.Controls.Add($lblPassword)
-
-$txtPassword = New-Object System.Windows.Forms.TextBox
-$txtPassword.Location = New-Object System.Drawing.Point(150, 180)
-$txtPassword.Size = New-Object System.Drawing.Size(200, 20)
-$txtPassword.PasswordChar = '*'
-$form.Controls.Add($txtPassword)
-
-# OutputBox til logning
-$OutputBox = New-Object System.Windows.Forms.TextBox
-$OutputBox.Location = New-Object System.Drawing.Point(20, 220)
-$OutputBox.Size = New-Object System.Drawing.Size(550, 100)
-$OutputBox.Multiline = $true
-$OutputBox.ScrollBars = "Vertical"
-$form.Controls.Add($OutputBox)
-
-# Knappen til oprettelse
-$btnCreate = New-Object System.Windows.Forms.Button
-$btnCreate.Text = "Opret Bruger"
-$btnCreate.Location = New-Object System.Drawing.Point(150, 340)
-$form.Controls.Add($btnCreate)
-
-# Funktion til at oprette AD-bruger
-$btnCreate.Add_Click({
-    $Name = $txtName.Text
-    $GivenName = $txtGivenName.Text
-    $Surname = $txtSurname.Text
-    $SamAccountName = $txtSamAccountName.Text
-    $Password = $txtPassword.Text
-
-    if (-not ($Name -and $GivenName -and $Surname -and $SamAccountName -and $Password)) {
-        $OutputBox.AppendText("Alle felter skal udfyldes.`r`n")
-        return
+        $textBox = New-Object System.Windows.Forms.TextBox
+        $textBox.Location = New-Object System.Drawing.Point(150, 20 + ($i * 40))
+        $fields[$labels[$i]] = $textBox
+        $inputForm.Controls.Add($textBox)
     }
 
-    try {
-        # Opret bruger
-        New-ADUser -Name $Name `
-                   -GivenName $GivenName `
-                   -Surname $Surname `
-                   -SamAccountName $SamAccountName `
-                   -UserPrincipalName "$SamAccountName@test.local" `
-                   -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) `
-                   -Enabled $true
-        $OutputBox.AppendText("Bruger $Name er oprettet.`r`n")
-    } catch {
-        $OutputBox.AppendText("Fejl ved oprettelse af bruger $($Name): $_")
-    }
-})
+    # Opret knap
+    $submitButton = New-Object System.Windows.Forms.Button
+    $submitButton.Text = "Opret Bruger"
+    $submitButton.Location = New-Object System.Drawing.Point(150, 240)
+    $submitButton.Add_Click({
+        try {
+            New-ADUser -Name $fields["Navn"].Text `
+                       -GivenName $fields["Fornavn"].Text `
+                       -Surname $fields["Efternavn"].Text `
+                       -SamAccountName $fields["SamAccountName"].Text `
+                       -UserPrincipalName "$($fields["SamAccountName"].Text)@test.local" `
+                       -AccountPassword (ConvertTo-SecureString $fields["Password"].Text -AsPlainText -Force)
+            Enable-ADAccount -Identity $fields["SamAccountName"].Text
+            $outputBox.AppendText("Bruger $($fields["Navn"].Text) oprettet og aktiveret.`r`n")
+            $inputForm.Close()
+        } catch {
+            $outputBox.AppendText("Fejl ved oprettelse af bruger $($fields["Navn"].Text): $_`r`n")
+        }
+    })
+    $inputForm.Controls.Add($submitButton)
 
-# Vis formularen
-$form.Add_Shown({$form.Activate()})
-[System.Windows.Forms.Application]::Run($form)
+    $inputForm.ShowDialog()
+}
+
+# Funktion til hjælp
+function ShowHelp {
+    $helpMessage = @"
+Dette script giver dig mulighed for at oprette brugere i Active Directory på to måder:
+
+1. Indlæsning fra en CSV-fil: Du angiver stien til en CSV-fil, der indeholder brugeroplysninger. Scriptet opretter brugerne automatisk baseret på denne fil.
+
+2. Manuel indtastning: Du indtaster brugeroplysninger direkte i GUI'en, og scriptet opretter brugeren.
+
+CSV-filen skal have følgende kolonner: Name, GivenName, Surname, SamAccountName og Password.
+
+Sørg for, at du har de nødvendige rettigheder til at oprette brugere i Active Directory.
+"@
+    [System.Windows.Forms.MessageBox]::Show($helpMessage, "Hjælp")
+}
+
+# Knapper i hovedmenuen
+$buttons = @("Indlæs fra CSV", "Manuel Indtastning", "Hjælp", "Afslut")
+$actions = @([scriptblock]::Create("LoadFromCSV"), 
+             [scriptblock]::Create("ManualEntry"), 
+             [scriptblock]::Create("ShowHelp"), 
+             [scriptblock]::Create({ $form.Close() }))
+
+for ($i = 0; $i -lt $buttons.Length; $i++) {
+    $button = New-Object System.Windows.Forms.Button
+    $button.Text = $buttons[$i]
+    $button.Size = New-Object System.Drawing.Size(150, 30)
+    $button.Location = New-Object System.Drawing.Point(20, 20 + ($i * 40))
+    $button.Add_Click($actions[$i])
+    $form.Controls.Add($button)
+}
+
+$form.ShowDialog()
