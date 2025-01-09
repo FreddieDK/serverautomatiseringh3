@@ -1,92 +1,108 @@
-﻿[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-
-# Import-Module til AD cmdlets
+﻿# Importer nødvendige moduler
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
 Import-Module ActiveDirectory
 
-# Start en løkke for at give flere valgmuligheder
-while ($true) {
-    # Valgmulighed for brugerinput
-    Write-Host "Vælg inputmetode:"
-    Write-Host "1: Indlæs fra CSV-fil"
-    Write-Host "2: Indtast manuelt"
-    Write-Host "3: Hjælp - Beskrivelse af scriptet"
-    Write-Host "4: Afslut"
-    $choice = Read-Host "Indtast dit valg (1, 2, 3 eller 4)"
+# Opret formular
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "AD User Creation Tool"
+$form.Size = New-Object System.Drawing.Size(600, 400)
+$form.StartPosition = "CenterScreen"
 
-    if ($choice -eq "1") {
-        # Indlæs fra CSV-fil
-        $csvPath = Read-Host "Indtast stien til CSV-filen"
-        if (Test-Path $csvPath) {
-            $users = Import-Csv -Path $csvPath -Delimiter ";"
-            foreach ($user in $users) {
-                # Opret AD-bruger fra CSV data
-                try {
-                    # Opret brugeren uden password
-                    New-ADUser -Name $user.Name `
-                               -GivenName $user.GivenName `
-                               -Surname $user.Surname `
-                               -SamAccountName $user.SamAccountName `
-                               -UserPrincipalName "$($user.SamAccountName)@test.local" `
-                               -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force) 
-                #Write-Host "Bruger $($user.Name) er oprettet."
-                    # Aktiver brugeren
-                    Enable-ADAccount -Identity $user.SamAccountName
-                    Write-Host "Bruger $($user.Name) er oprettet og aktiveret."
-                } catch {
-                    Write-Host "Fejl ved oprettelse af bruger $($user.Name): $_"
-                }
-            }
-        } else {
-            Write-Host "CSV-filen blev ikke fundet. Tjek filstien."
-        }
+# Label og tekstbokse til input
+$lblName = New-Object System.Windows.Forms.Label
+$lblName.Text = "Navn:"
+$lblName.Location = New-Object System.Drawing.Point(20, 20)
+$form.Controls.Add($lblName)
 
-    } elseif ($choice -eq "2") {
-        # Manuel indtastning
-        $Name = Read-Host "Indtast navn"
-        $GivenName = Read-Host "Indtast fornavn"
-        $Surname = Read-Host "Indtast efternavn"
-        $SamAccountName = Read-Host "Indtast brugernavn (SamAccountName)"
-        $Password = Read-Host "Indtast brugerens kodeord"
+$txtName = New-Object System.Windows.Forms.TextBox
+$txtName.Location = New-Object System.Drawing.Point(150, 20)
+$txtName.Size = New-Object System.Drawing.Size(200, 20)
+$form.Controls.Add($txtName)
 
-        # Opret AD-bruger med indtastede data
-        try {
-            # Opret brugeren uden password
-            New-ADUser -Name $Name `
-                       -GivenName $GivenName `
-                       -Surname $Surname `
-                       -SamAccountName $SamAccountName `
-                       -UserPrincipalName "$SamAccountName@test.local" `
-                       -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) 
-                       -PassThru
+$lblGivenName = New-Object System.Windows.Forms.Label
+$lblGivenName.Text = "Fornavn:"
+$lblGivenName.Location = New-Object System.Drawing.Point(20, 60)
+$form.Controls.Add($lblGivenName)
 
+$txtGivenName = New-Object System.Windows.Forms.TextBox
+$txtGivenName.Location = New-Object System.Drawing.Point(150, 60)
+$txtGivenName.Size = New-Object System.Drawing.Size(200, 20)
+$form.Controls.Add($txtGivenName)
 
-            #Write-Host "Bruger $Name er oprettet."
-                                # Aktiver brugeren
-                                Enable-ADAccount -Identity $user.SamAccountName
-                                Write-Host "Bruger $($user.Name) er oprettet og aktiveret."
-        } catch {
-            Write-Host "Fejl ved oprettelse af bruger $($Name): $_"
-        }
+$lblSurname = New-Object System.Windows.Forms.Label
+$lblSurname.Text = "Efternavn:"
+$lblSurname.Location = New-Object System.Drawing.Point(20, 100)
+$form.Controls.Add($lblSurname)
 
-    } elseif ($choice -eq "3") {
-        # Hjælp - Beskrivelse af scriptet
-        Write-Host "Dette script giver dig mulighed for at oprette brugere i Active Directory på to måder:"
-        Write-Host "`n1. Indlæsning fra en CSV-fil: Du angiver stien til en CSV-fil, der indeholder brugeroplysninger. Scriptet opretter brugerne automatisk baseret på denne fil."
+$txtSurname = New-Object System.Windows.Forms.TextBox
+$txtSurname.Location = New-Object System.Drawing.Point(150, 100)
+$txtSurname.Size = New-Object System.Drawing.Size(200, 20)
+$form.Controls.Add($txtSurname)
 
-        Write-Host "`n2. Manuel indtastning: Du indtaster brugeroplysninger direkte i terminalen, og scriptet opretter brugeren."
+$lblSamAccountName = New-Object System.Windows.Forms.Label
+$lblSamAccountName.Text = "Brugernavn (SamAccountName):"
+$lblSamAccountName.Location = New-Object System.Drawing.Point(20, 140)
+$form.Controls.Add($lblSamAccountName)
 
-        Write-Host "`nCSV-filen skal have følgende kolonner: Name, GivenName, Surname og Password."
+$txtSamAccountName = New-Object System.Windows.Forms.TextBox
+$txtSamAccountName.Location = New-Object System.Drawing.Point(150, 140)
+$txtSamAccountName.Size = New-Object System.Drawing.Size(200, 20)
+$form.Controls.Add($txtSamAccountName)
 
-        Write-Host "`nSørg for, at du har de nødvendige rettigheder til at oprette brugere i Active Directory."
+$lblPassword = New-Object System.Windows.Forms.Label
+$lblPassword.Text = "Adgangskode:"
+$lblPassword.Location = New-Object System.Drawing.Point(20, 180)
+$form.Controls.Add($lblPassword)
 
-        Write-Host "`nKontakt Sebastian ved fejl i scriptet på seba214h@zbc.dk"
+$txtPassword = New-Object System.Windows.Forms.TextBox
+$txtPassword.Location = New-Object System.Drawing.Point(150, 180)
+$txtPassword.Size = New-Object System.Drawing.Size(200, 20)
+$txtPassword.PasswordChar = '*'
+$form.Controls.Add($txtPassword)
 
-    } elseif ($choice -eq "4") {
-        # Afslut scriptet
-        Write-Host "Scriptet afsluttes."
-        break
+# OutputBox til logning
+$OutputBox = New-Object System.Windows.Forms.TextBox
+$OutputBox.Location = New-Object System.Drawing.Point(20, 220)
+$OutputBox.Size = New-Object System.Drawing.Size(550, 100)
+$OutputBox.Multiline = $true
+$OutputBox.ScrollBars = "Vertical"
+$form.Controls.Add($OutputBox)
 
-    } else {
-        Write-Host "Ugyldigt valg. Scriptet afsluttes."
+# Knappen til oprettelse
+$btnCreate = New-Object System.Windows.Forms.Button
+$btnCreate.Text = "Opret Bruger"
+$btnCreate.Location = New-Object System.Drawing.Point(150, 340)
+$form.Controls.Add($btnCreate)
+
+# Funktion til at oprette AD-bruger
+$btnCreate.Add_Click({
+    $Name = $txtName.Text
+    $GivenName = $txtGivenName.Text
+    $Surname = $txtSurname.Text
+    $SamAccountName = $txtSamAccountName.Text
+    $Password = $txtPassword.Text
+
+    if (-not ($Name -and $GivenName -and $Surname -and $SamAccountName -and $Password)) {
+        $OutputBox.AppendText("Alle felter skal udfyldes.`r`n")
+        return
     }
-}
+
+    try {
+        # Opret bruger
+        New-ADUser -Name $Name `
+                   -GivenName $GivenName `
+                   -Surname $Surname `
+                   -SamAccountName $SamAccountName `
+                   -UserPrincipalName "$SamAccountName@test.local" `
+                   -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) `
+                   -Enabled $true
+        $OutputBox.AppendText("Bruger $Name er oprettet.`r`n")
+    } catch {
+        $OutputBox.AppendText("Fejl ved oprettelse af bruger $Name: $_`r`n")
+    }
+})
+
+# Vis formularen
+$form.Add_Shown({$form.Activate()})
+[System.Windows.Forms.Application]::Run($form)
