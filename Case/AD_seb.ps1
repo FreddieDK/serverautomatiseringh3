@@ -1,5 +1,6 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 <#
+.SYNOPSIS
 Dette script opretter brugere i AD. 
 
 Ved start af script bliver brugeren mødt af 3 valgmuligheder
@@ -8,6 +9,7 @@ Ved start af script bliver brugeren mødt af 3 valgmuligheder
 2: "Indtast manuelt" - Brugeren skal manuelt indtaste data udfra de prompter der kommer i terminalen, hvorefter scriptet opretter brugeren.
 3: "Hjælp - Beskrivelse af scriptet" - Hjælpemenu der beskriver hvad de 2 valg gør, samt kontaktinformation for udvikleren af scriptet.
 
+.NOTES
 AUTHOR: Sebastian Nielsen - seba214h@zbc.dk
 
 Version: 1.1
