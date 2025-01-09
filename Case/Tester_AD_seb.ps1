@@ -99,7 +99,7 @@ $btnCreate.Add_Click({
                    -Enabled $true
         $OutputBox.AppendText("Bruger $Name er oprettet.`r`n")
     } catch {
-        $OutputBox.AppendText("Fejl ved oprettelse af bruger $Name: $_`r`n")
+        $OutputBox.AppendText("Fejl ved oprettelse af bruger $($Name): $_")
     }
 })
 
