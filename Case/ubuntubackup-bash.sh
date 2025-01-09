@@ -3,7 +3,7 @@
 # Mapper og filer der skal sikkerhedskopieres
 backup="/home /var/spool/mail /etc /root /boot /opt"
 
-# Destination for sikkerhedskopier
+# Destination til backup
 dest="/mnt/backup/serverbackups"
 
 # Logfil placering
