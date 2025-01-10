@@ -44,7 +44,7 @@ while ($true) {
     # Formater log entry
     $logEntry = "$date;$($cpuTime.ToString("#,0.000"));$($availMem.ToString("N0"));$($availMemPercent.ToString("#,0.0"));$totalDisk;$usedDisk;$diskUsagePercent;$uptime"
 
-    # Tilføj log entry til CSV filen
+    # Tilføj log entry til CSV fil
     $logEntry | Out-File -FilePath $logFile -Append -Encoding UTF8
 
     # Fremvis de nuværende målinger i consollen
