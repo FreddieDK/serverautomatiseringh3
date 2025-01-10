@@ -70,7 +70,7 @@ function OpretBrugerManuelt {
                    -PassThru | Enable-ADAccount
         Write-Host "Bruger $Name er oprettet og aktiveret."
     } catch {
-        Write-Host "Fejl ved oprettelse af bruger $Name: $_"
+        Write-Host "Fejl ved oprettelse af bruger $($user.Name): $_"
     }
 }
 
