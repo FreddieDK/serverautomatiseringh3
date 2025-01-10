@@ -11,34 +11,30 @@ try {
     Format-Table -AutoSize
 }
 catch {
-    "Kunne ikke hente Computer navn eller CPU metrics" 
+    Write-Host "Kunne ikke hente PC navn eller CPU metric(s)" 
 }
 }
     
 function Get-MemoryUtilization {
 
-try {
+try 
     Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computername |
-    Select-Object PSComputername, @{Name="TotalMemoryGB";Expression={[math]::Round(($_.TotalVisibleMemorySize/1MB),2)}} |
+    Select-Object PSComputername, @{Name="TotalMemoryGB";Expression={[math]::Round(($_.TotalVisibleMemorySize/1MB),1)}}, @{Name="FreeMemoryGB";Expression={[math]::Round(($_.FreePhysicalMemory/1MB),1)}} |
     Format-Table -AutoSize
 
-    Get-WmiObject -Class Win32_ComputerSystem -ComputerName $computername |    
-    Select-Object PSComputername, @{Name="FreeMemoryGB";Expression={[math]::Round(($_.FreePhysicalMemory/1GB),1)}} |
-    Format-Table -AutoSize
-    }
 catch {
-    "Kunne ikke hente RAM metrics"
+    Write-Host "Kunne ikke hente PC navn eller RAM metric(s)"
 }
 }
     
 function Get-DiskUtilization {
 
 try {
-    Get-WmiObject -Class Win32_LogiclDisk -ComputerName $computername |
+    Get-WmiObject -Class Win32_LogicalDisk -ComputerName $computername |
     Select-Object SystemName, @{Name="SizeGB";Expression={[math]::Round(($_.Size/1GB),2)}}, @{Name="FreeSpaceGB";Expression={[math]::Round(($_.FreeSpace/1GB),2)}} |
     Format-Table -AutoSize
 }
 catch {
-    "Kunne ikke hente Disk metrics"
+    Write-Host "Kunne ikke hente PC navn eller Disk metric(s)"
 }
 }
